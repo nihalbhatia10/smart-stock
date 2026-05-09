@@ -1,14 +1,17 @@
+import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
 
 const Layout = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <div className="flex h-screen overflow-hidden bg-primary">
-      <Sidebar />
+      <Sidebar isOpen={isMobileMenuOpen} setIsOpen={setIsMobileMenuOpen} />
       <div className="flex-1 flex flex-col min-w-0">
-        <Topbar />
-        <main className="flex-1 overflow-auto p-6 lg:p-8 flex flex-col">
+        <Topbar onMenuClick={() => setIsMobileMenuOpen(true)} />
+        <main className="flex-1 overflow-auto p-4 md:p-6 lg:p-8 flex flex-col">
           <div className="flex-1">
             <Outlet />
           </div>
