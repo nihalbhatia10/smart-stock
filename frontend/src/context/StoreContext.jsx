@@ -16,6 +16,15 @@ const initialSales = [
   { id: 'INV-1003', date: '2026-10-23T09:15:00Z', customer: 'Charlie Davis', items: [{ productId: '3', qty: 1 }], total: 199.99 },
 ];
 
+const initialEmployees = [
+  { id: 'EMP-001', name: 'John Doe', role: 'Store Manager', salary: 4500 },
+  { id: 'EMP-002', name: 'Jane Smith', role: 'Sales Associate', salary: 3000 },
+];
+
+const initialPayroll = [
+  { id: 'PAY-1001', date: '2026-05-01T10:00:00Z', employeeId: 'EMP-001', amount: 4500, notes: 'May Salary' },
+];
+
 export const StoreProvider = ({ children }) => {
   const [inventory, setInventory] = useState(() => {
     const localData = localStorage.getItem('smartstock_inventory');
@@ -27,6 +36,16 @@ export const StoreProvider = ({ children }) => {
     return localData ? JSON.parse(localData) : initialSales;
   });
 
+  const [employees, setEmployees] = useState(() => {
+    const localData = localStorage.getItem('smartstock_employees');
+    return localData ? JSON.parse(localData) : initialEmployees;
+  });
+
+  const [payroll, setPayroll] = useState(() => {
+    const localData = localStorage.getItem('smartstock_payroll');
+    return localData ? JSON.parse(localData) : initialPayroll;
+  });
+
   useEffect(() => {
     localStorage.setItem('smartstock_inventory', JSON.stringify(inventory));
   }, [inventory]);
@@ -34,6 +53,14 @@ export const StoreProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem('smartstock_sales', JSON.stringify(sales));
   }, [sales]);
+
+  useEffect(() => {
+    localStorage.setItem('smartstock_employees', JSON.stringify(employees));
+  }, [employees]);
+
+  useEffect(() => {
+    localStorage.setItem('smartstock_payroll', JSON.stringify(payroll));
+  }, [payroll]);
 
   const addProduct = (product) => {
     const newProduct = { ...product, id: Date.now().toString() };
@@ -88,16 +115,43 @@ export const StoreProvider = ({ children }) => {
     return true;
   };
 
+  const addEmployee = (employee) => {
+    const newEmployee = { ...employee, id: `EMP-${Date.now().toString().slice(-3)}` };
+    setEmployees([...employees, newEmployee]);
+    toast.success('Employee added successfully!');
+  };
+
+  const updateEmployee = (id, updatedEmployee) => {
+    setEmployees(employees.map(e => e.id === id ? { ...e, ...updatedEmployee } : e));
+    toast.success('Employee updated!');
+  };
+
+  const recordPayroll = (employeeId, amount, notes) => {
+    const newRecord = {
+      id: `PAY-${Date.now().toString().slice(-4)}`,
+      date: new Date().toISOString(),
+      employeeId,
+      amount,
+      notes
+    };
+    setPayroll([newRecord, ...payroll]);
+    toast.success('Payroll payment recorded successfully!');
+  };
+
   const resetData = () => {
     setInventory(initialInventory);
     setSales(initialSales);
+    setEmployees(initialEmployees);
+    setPayroll(initialPayroll);
     toast.success('All demo data restored to defaults!');
   };
 
   return (
     <StoreContext.Provider value={{
       inventory, addProduct, updateProduct, deleteProduct,
-      sales, recordSale, resetData
+      sales, recordSale, resetData,
+      employees, addEmployee, updateEmployee,
+      payroll, recordPayroll
     }}>
       {children}
     </StoreContext.Provider>

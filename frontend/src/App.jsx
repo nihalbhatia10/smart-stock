@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import Inventory from './pages/Inventory';
 import Sales from './pages/Sales';
 import Predictions from './pages/Predictions';
+import Payroll from './pages/Payroll';
 import Settings from './pages/Settings';
 import { Package } from 'lucide-react';
 
@@ -69,6 +70,7 @@ function App() {
             <Route path="inventory" element={<Inventory />} />
             <Route path="sales" element={<Sales />} />
             <Route path="predictions" element={<Predictions />} />
+            <Route path="payroll" element={<Payroll />} />
             <Route path="settings" element={<Settings />} />
           </Route>
         </Routes>

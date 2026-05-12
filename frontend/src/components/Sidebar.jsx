@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Package, ShoppingCart, TrendingUp, Settings, X } from 'lucide-react';
+import { LayoutDashboard, Package, ShoppingCart, TrendingUp, Settings, X, Users } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const navItems = [
@@ -7,6 +7,7 @@ const navItems = [
   { name: 'Inventory', path: '/inventory', icon: Package },
   { name: 'Sales', path: '/sales', icon: ShoppingCart },
   { name: 'ML Predictions', path: '/predictions', icon: TrendingUp },
+  { name: 'Payroll', path: '/payroll', icon: Users },
   { name: 'Settings', path: '/settings', icon: Settings },
 ];
 
@@ -27,10 +28,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
       </AnimatePresence>
 
       {/* Sidebar Container */}
-      <motion.aside 
-        initial={false}
-        animate={{ x: isOpen ? 0 : -280 }}
-        className={`fixed md:relative top-0 left-0 h-full w-64 flex flex-col bg-card backdrop-blur-xl border-r border-white/5 z-50 transition-transform duration-300 md:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
+      <aside 
+        className={`fixed md:relative top-0 left-0 h-full w-64 shrink-0 flex flex-col bg-card backdrop-blur-xl border-r border-white/5 z-50 transition-transform duration-300 md:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div className="p-6 flex justify-between items-center">
           <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-accent to-secondaryAccent">
@@ -63,7 +62,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             </NavLink>
           ))}
         </nav>
-      </motion.aside>
+      </aside>
     </>
   );
 };
